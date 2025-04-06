@@ -1,0 +1,235 @@
+/* Font import - Choose ONE of these methods */
+/* Method 1: If you're using Adobe Fonts (Typekit) */
+/* Uncomment this if you're using Adobe Fonts
+@import url("https://use.typekit.net/YOUR_PROJECT_ID.css");
+*/
+
+/* Method 2: If you're self-hosting the font */
+@font-face {
+  font-family: 'Univers LT 55 Roman';
+  src: url('fonts/UniversLT-55Roman.woff2') format('woff2'),
+       url('fonts/UniversLT-55Roman.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* Reset and base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Univers LT 55 Roman', 'Helvetica Neue', Arial, sans-serif;
+  color: white;
+  background-color: black;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  letter-spacing: 0.05em;
+}
+
+/* Video background */
+.video-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  overflow: hidden;
+}
+
+/* For Vimeo iframe - fixed size approach */
+iframe#background-video {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150vw; /* Much wider than viewport */
+  height: 150vh; /* Much taller than viewport */
+  opacity: 0.8; /* 80% opacity as requested */
+  border: 0;
+  pointer-events: none; /* Prevents iframe from capturing clicks */
+}
+
+/* Extra expansion for mobile to ensure no black background */
+@media (max-width: 768px) {
+  iframe#background-video {
+    width: 450vw; /* Much wider on mobile */
+    height: 450vh; /* Much taller on mobile */
+  }
+}
+
+/* Even more expansion for very small screens */
+@media (max-width: 480px) {
+  iframe#background-video {
+    width: 300vw; /* Extremely wide on small mobile */
+    height: 300vh; /* Extremely tall on small mobile */
+  }
+}
+
+/* Content layout - centered like in the screenshot */
+.content-container {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center; /* Center vertically */
+  align-items: center; /* Center horizontally */
+  padding: 2rem;
+}
+
+/* Main row with times, logo, and navigation */
+.main-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  max-width: 1200px; /* Limit width on larger screens */
+}
+
+/* City times */
+.city-times {
+  flex: 1;
+  text-align: left;
+}
+
+.time-display {
+  margin-bottom: 0.5rem;
+  font-size: 1rem;
+}
+
+/* Center logo */
+.center-logo {
+  flex: 2;
+  display: flex;
+  justify-content: center;
+  max-width: 300px;
+}
+
+.center-logo img {
+  width: 100%;
+  height: auto;
+}
+
+/* Navigation links */
+.nav-links {
+  flex: 1;
+  text-align: right;
+}
+
+.nav-links div {
+  margin-bottom: 0.5rem;
+}
+
+/* Navigation link styling */
+.nav-link {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
+  transition: transform 0.3s ease, letter-spacing 0.3s ease;
+  transform-origin: right;
+}
+
+.nav-link:hover {
+  transform: scale(1.1);
+  letter-spacing: 0.08em;
+}
+
+/* Sound control */
+.sound-control {
+  position: absolute;
+  bottom: 2rem;
+  right: 2rem;
+}
+
+#sound-toggle {
+  background: transparent;
+  border: none;
+  color: white;
+  font-family: 'Univers LT 55 Roman', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  letter-spacing: 0.05em;
+}
+
+/* Page transition effects */
+.page-transition {
+  opacity: 0;
+  transition: none;
+}
+
+.page-loaded {
+  opacity: 1;
+  transition: opacity 1s ease-out;
+}
+
+.page-transition-out {
+  opacity: 0;
+  transition: opacity 0.5s ease-in-out;
+}
+
+/* Responsive adjustments - keeping horizontal layout but making fonts smaller */
+@media (max-width: 768px) {
+  .main-row {
+      /* Keep horizontal layout */
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      padding: 0 0.5rem;
+  }
+  
+  /* Make fonts smaller on mobile */
+  .time-display {
+      font-size: 0.7rem;
+      margin-bottom: 0.3rem;
+  }
+  
+  .nav-links div {
+      font-size: 0.7rem;
+      margin-bottom: 0.3rem;
+  }
+  
+  /* Make logo smaller */
+  .center-logo {
+      max-width: 150px;
+  }
+  
+  /* Adjust sound toggle */
+  #sound-toggle {
+      font-size: 0.7rem;
+  }
+  
+  /* Reduce padding */
+  .content-container {
+      padding: 1rem;
+  }
+}
+
+/* Extra small devices */
+@media (max-width: 100vh) {
+  .time-display {
+      font-size: 0.6rem;
+  }
+  
+  .nav-links div {
+      font-size: 0.6rem;
+  }
+  
+  .center-logo {
+      max-width: 120px;
+  }
+  
+  #sound-toggle {
+      font-size: 0.6rem;
+  }
+}

@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conditions</title>
+    <link rel="stylesheet" href="/css files/index.css">
+</head>
+<body class="page-transition">
+    <!-- Vimeo video background -->
+    <div class="video-container">
+        <iframe id="background-video" src="https://player.vimeo.com/video/1072900329?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0&transparent=1&dnt=1&quality=1080p" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <!-- Main content container -->
+    <div class="content-container">
+        <!-- Main row with times, logo, and navigation -->
+        <div class="main-row">
+            <!-- Left: City times -->
+            <div class="city-times">
+                <div class="time-display">LA <span id="la-time">00:00:00</span></div>
+                <div class="time-display">MN <span id="mn-time">00:00:00</span></div>
+            </div>
+            
+            <!-- Center: Logo -->
+            <div class="center-logo">
+                <img src="BASE FILES/Conditions_Wordmark_white.png" alt="Conditions Logo">
+            </div>
+            
+            <!-- Right: Navigation links -->
+            <div class="nav-links">
+                <div><a href="about.html" class="nav-link">WHO WE ARE</a></div>
+                <div><a href="vehicles.html" class="nav-link">VEHICLES</a></div>
+            </div>
+        </div>
+
+        <!-- Sound control button -->
+        <div class="sound-control">
+            <button id="sound-toggle">
+                <span id="sound-text">SOUND OFF</span>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    <script src="/js files/index.js"></script>
+</body>
+</html>

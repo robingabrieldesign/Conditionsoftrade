@@ -1,0 +1,26 @@
+{
+    "siteName": "Conditions",
+    "version": "1.0.0",
+    "description": "Conditions website with video background",
+    "videoSettings": {
+      "source": "videos/found_objects_-_verde.mp4",
+      "opacity": 0.8,
+      "autoplay": true,
+      "loop": true,
+      "defaultMuted": true
+    },
+    "locations": {
+      "LA": {
+        "name": "Los Angeles",
+        "timezone": "America/Los_Angeles"
+      },
+      "MN": {
+        "name": "Minnesota",
+        "timezone": "America/Chicago"
+      }
+    },
+    "navigation": {
+      "aboutLink": "Who We Are",
+      "projectsLink": "Vehicles"
+    }
+  }
