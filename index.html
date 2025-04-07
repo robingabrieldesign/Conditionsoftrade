@@ -44,5 +44,41 @@
 
     <script src="https://player.vimeo.com/api/player.js"></script>
     <script src="/js files/index.js"></script>
+    
+    <!-- Special script to handle orientation changes and resizing -->
+    <script>
+        // Function to ensure video always fills the screen
+        function ensureFullscreenVideo() {
+            const iframe = document.getElementById('background-video');
+            
+            // Make iframe temporarily even larger during transitions
+            iframe.style.width = '500vw';
+            iframe.style.height = '500vh';
+            
+            // After a short delay, return to normal large size
+            setTimeout(() => {
+                if (window.matchMedia("(orientation: portrait)").matches) {
+                    iframe.style.width = '400vh';
+                    iframe.style.height = '400vh';
+                } else {
+                    iframe.style.width = '400vw';
+                    iframe.style.height = '400vw';
+                }
+            }, 100);
+        }
+        
+        // Call on page load
+        window.addEventListener('load', ensureFullscreenVideo);
+        
+        // Call on orientation change
+        window.addEventListener('orientationchange', ensureFullscreenVideo);
+        
+        // Call on resize with debounce
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(ensureFullscreenVideo, 100);
+        });
+    </script>
 </body>
 </html>

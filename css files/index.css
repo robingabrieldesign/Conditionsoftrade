@@ -42,32 +42,32 @@ body {
   overflow: hidden;
 }
 
-/* For Vimeo iframe - fixed size approach */
+/* For Vimeo iframe - more robust approach */
 iframe#background-video {
-  position: fixed;
+  position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 150vw; /* Much wider than viewport */
-  height: 150vh; /* Much taller than viewport */
+  width: 300vw; /* Extremely wide */
+  height: 300vh; /* Extremely tall */
   opacity: 0.8; /* 80% opacity as requested */
   border: 0;
   pointer-events: none; /* Prevents iframe from capturing clicks */
+  transition: width 0.1s, height 0.1s; /* Quick transition during resize */
 }
 
-/* Extra expansion for mobile to ensure no black background */
-@media (max-width: 768px) {
+/* Handle orientation changes and transitions */
+@media screen and (orientation: portrait) {
   iframe#background-video {
-    width: 450vw; /* Much wider on mobile */
-    height: 450vh; /* Much taller on mobile */
+    width: 400vh; /* Even wider in portrait mode */
+    height: 400vh; /* Even taller in portrait mode */
   }
 }
 
-/* Even more expansion for very small screens */
-@media (max-width: 480px) {
+@media screen and (orientation: landscape) {
   iframe#background-video {
-    width: 300vw; /* Extremely wide on small mobile */
-    height: 300vh; /* Extremely tall on small mobile */
+    width: 400vw; /* Even wider in landscape mode */
+    height: 400vw; /* Even taller in landscape mode */
   }
 }
 
@@ -216,7 +216,7 @@ iframe#background-video {
 }
 
 /* Extra small devices */
-@media (max-width: 100vh) {
+@media (max-width: 480px) {
   .time-display {
       font-size: 0.6rem;
   }
