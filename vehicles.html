@@ -84,7 +84,7 @@
         }
 
         .logo img {
-            height: 30px;
+            height: 20px;
             width: auto;
         }
 
@@ -96,7 +96,7 @@
         .nav-link {
             color: white;
             text-decoration: none;
-            font-size: 15px; /* Changed to 15px as requested */
+            font-size: 15px;
             font-weight: 400;
             transition: opacity 0.3s ease;
         }
@@ -178,7 +178,7 @@
 
         .action-button {
             background: transparent;
-            border: 1px solid white;
+            border: none; /* Removed border */
             color: white;
             padding: 0.75rem 1.5rem;
             font-size: 16px;
@@ -189,8 +189,7 @@
         }
 
         .action-button:hover {
-            background: white;
-            color: black;
+            opacity: 0.7; /* Changed hover effect */
         }
 
         .close-button {
@@ -214,52 +213,143 @@
             opacity: 0.7;
         }
 
-        .vehicle-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 2rem;
+        /* Photo gallery styles */
+        .photo-gallery {
+            position: relative;
             margin-bottom: 3rem;
         }
 
-        .vehicle-image-container {
+        .gallery-container {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .photo-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr); /* 1x4 layout for all screens */
+            gap: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .photo-item {
             position: relative;
             width: 100%;
             height: 0;
-            padding-bottom: 66.67%;
+            padding-bottom: 75%;
             overflow: hidden;
             background-color: rgba(255, 255, 255, 0.1);
             border: 1px solid rgba(255, 255, 255, 0.2);
+            cursor: pointer;
         }
 
-        .vehicle-image {
+        .photo-item img {
             position: absolute;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.5s ease;
+            transition: transform 0.3s ease;
         }
 
-        .vehicle-image-container:hover .vehicle-image {
+        .photo-item:hover img {
             transform: scale(1.05);
         }
 
-        .vehicle-details {
-            padding: 1rem 0;
+        /* Gallery navigation */
+        .gallery-nav {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 1rem;
+            margin-top: 2rem;
         }
 
-        .vehicle-details h3 {
-            font-size: 1.1rem;
-            font-weight: 500;
-            margin: 0 0 0.5rem 0;
-            letter-spacing: 0.05rem;
+        .nav-arrow {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
         }
 
-        .vehicle-details p {
-            font-size: 0.9rem;
-            margin: 0;
-            opacity: 0.8;
+        .nav-arrow:hover {
+            background: white;
+            color: black;
+        }
+
+        .nav-arrow:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        .nav-arrow:disabled:hover {
+            background: transparent;
+            color: white;
+        }
+
+        .gallery-counter {
+            font-size: 14px;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        /* Modal styles */
+        .photo-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .photo-modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            position: relative;
+            max-width: 90vw;
+            max-height: 90vh;
+            cursor: default;
+        }
+
+        .modal-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .modal-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 30px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .modal-close:hover {
+            opacity: 0.7;
         }
 
         .vehicle-specs {
@@ -296,24 +386,24 @@
 
         #sound-toggle {
             background: transparent;
-            border: 1px solid white;
+            border: none; /* Removed border */
             color: white;
             padding: 0.5rem 1rem;
             font-size: 0.8rem;
             letter-spacing: 0.1rem;
             cursor: pointer;
-            transition: background-color 0.3s ease, color 0.3s ease;
+            transition: opacity 0.3s ease; /* Changed to opacity transition */
         }
 
         #sound-toggle:hover {
-            background-color: white;
-            color: black;
+            opacity: 0.7; /* Changed hover effect */
         }
 
         /* Responsive styles */
         @media (max-width: 1024px) {
-            .vehicle-grid {
-                grid-template-columns: 1fr 1fr;
+            .photo-grid {
+                grid-template-columns: repeat(4, 1fr); /* Keep 1x4 on tablets */
+                gap: 0.75rem;
             }
             
             .specs-grid {
@@ -323,7 +413,7 @@
 
         @media (max-width: 768px) {
             .header {
-                flex-direction: row; /* Changed from column to row for better mobile layout */
+                flex-direction: row;
                 justify-content: space-between;
                 align-items: center;
                 gap: 1rem;
@@ -335,11 +425,11 @@
             }
 
             .nav-link {
-                font-size: 15px; /* Kept at 15px as requested */
+                font-size: 15px;
             }
 
             .logo img {
-                height: 25px;
+                height: 18px;
             }
 
             .showcase-content {
@@ -356,8 +446,9 @@
                 gap: 1rem;
             }
 
-            .vehicle-grid {
-                grid-template-columns: 1fr;
+            .photo-grid {
+                grid-template-columns: repeat(4, 1fr); /* Keep 1x4 on mobile */
+                gap: 0.5rem;
             }
 
             .specs-grid {
@@ -371,7 +462,7 @@
             }
 
             .header {
-                flex-direction: column; /* Stack vertically on very small screens */
+                flex-direction: column;
                 align-items: center;
             }
 
@@ -380,11 +471,11 @@
             }
 
             .nav-link {
-                font-size: 15px; /* Kept at 15px as requested */
+                font-size: 15px;
             }
 
             .logo img {
-                height: 20px;
+                height: 16px;
             }
 
             .vehicle-item-trigger {
@@ -395,8 +486,23 @@
                 font-size: 2rem;
             }
 
+            .photo-grid {
+                grid-template-columns: repeat(4, 1fr); /* Keep 1x4 even on small mobile */
+                gap: 0.25rem;
+            }
+
             .specs-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .action-button {
+                font-size: 14px;
+                padding: 0.5rem 1rem;
+            }
+
+            #sound-toggle {
+                font-size: 0.7rem;
+                padding: 0.4rem 0.8rem;
             }
         }
     </style>
@@ -449,45 +555,18 @@
                 </div>
             </div>
             
-            <div class="vehicle-grid">
-                <div class="vehicle-item">
-                    <div class="vehicle-image-container">
-                        <img src="photos/VEHICLES/200GE/front.jpg" alt="200GE Front View" class="vehicle-image">
-                    </div>
-                    <div class="vehicle-details">
-                        <h3>FRONT VIEW</h3>
-                        <p>Iconic design meets modern engineering</p>
+            <!-- Photo Gallery -->
+            <div class="photo-gallery">
+                <div class="gallery-container">
+                    <div class="photo-grid" id="photo-grid">
+                        <!-- Photos will be dynamically loaded here -->
                     </div>
                 </div>
                 
-                <div class="vehicle-item">
-                    <div class="vehicle-image-container">
-                        <img src="photos/VEHICLES/200GE/side.jpg" alt="200GE Side View" class="vehicle-image">
-                    </div>
-                    <div class="vehicle-details">
-                        <h3>SIDE PROFILE</h3>
-                        <p>Timeless silhouette with rugged capability</p>
-                    </div>
-                </div>
-                
-                <div class="vehicle-item">
-                    <div class="vehicle-image-container">
-                        <img src="photos/VEHICLES/200GE/interior.jpg" alt="200GE Interior" class="vehicle-image">
-                    </div>
-                    <div class="vehicle-details">
-                        <h3>INTERIOR</h3>
-                        <p>Refined comfort with premium materials</p>
-                    </div>
-                </div>
-                
-                <div class="vehicle-item">
-                    <div class="vehicle-image-container">
-                        <img src="photos/VEHICLES/200GE/detail.jpg" alt="200GE Details" class="vehicle-image">
-                    </div>
-                    <div class="vehicle-details">
-                        <h3>DETAILS</h3>
-                        <p>Precision craftsmanship in every element</p>
-                    </div>
+                <div class="gallery-nav">
+                    <button class="nav-arrow" id="prev-btn">‹</button>
+                    <span class="gallery-counter" id="gallery-counter">1-4 of 16</span>
+                    <button class="nav-arrow" id="next-btn">›</button>
                 </div>
             </div>
             
@@ -514,89 +593,160 @@
         </div>
     </div>
 
+    <!-- Photo Modal -->
+    <div class="photo-modal" id="photo-modal">
+        <div class="modal-content">
+            <button class="modal-close" id="modal-close">&times;</button>
+            <img class="modal-image" id="modal-image" src="/placeholder.svg" alt="">
+        </div>
+    </div>
+
     <script src="https://player.vimeo.com/api/player.js"></script>
     
     <script>
+        // Photo gallery data
+        const photos = [
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a3454-80682.jpg",
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a3478-54473.jpg",
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a3621-56015.jpg",
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a9170-55005.jpg",
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a9178-55016.jpg",
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a9192-55000.jpg",
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a9192-55055.jpg",
+            "photos/VEHICLES/200GE/1991_mercedes-benz_200ge_l1a9193-55005.jpg",
+            "photos/VEHICLES/200GE/L1A3470-60437.jpg",
+            "photos/VEHICLES/200GE/L1A3474-60446.jpg",
+            "photos/VEHICLES/200GE/L1A3480-60461.jpg",
+            "photos/VEHICLES/200GE/L1A3487-60480.jpg",
+            "photos/VEHICLES/200GE/L1A3489-60484.jpg",
+            "photos/VEHICLES/200GE/L1A3493-60498.jpg",
+            "photos/VEHICLES/200GE/L1A3621-60522.jpg",
+            "photos/VEHICLES/200GE/L1A3640-60526.jpg"
+        ];
+
+        // Gallery state
+        let currentPage = 0;
+        const photosPerPage = 4;
+        const totalPages = Math.ceil(photos.length / photosPerPage);
+
+        // Elements
+        const photoGrid = document.getElementById('photo-grid');
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        const galleryCounter = document.getElementById('gallery-counter');
+        const photoModal = document.getElementById('photo-modal');
+        const modalImage = document.getElementById('modal-image');
+        const modalClose = document.getElementById('modal-close');
+
+        // Load photos for current page
+        function loadPhotos() {
+            photoGrid.innerHTML = '';
+            const startIndex = currentPage * photosPerPage;
+            const endIndex = Math.min(startIndex + photosPerPage, photos.length);
+            
+            for (let i = startIndex; i < endIndex; i++) {
+                const photoItem = document.createElement('div');
+                photoItem.className = 'photo-item';
+                photoItem.innerHTML = `<img src="${photos[i]}" alt="200GE Photo ${i + 1}">`;
+                photoItem.addEventListener('click', () => openModal(photos[i]));
+                photoGrid.appendChild(photoItem);
+            }
+            
+            // Update counter
+            const displayStart = startIndex + 1;
+            const displayEnd = endIndex;
+            galleryCounter.textContent = `${displayStart}-${displayEnd} of ${photos.length}`;
+            
+            // Update navigation buttons
+            prevBtn.disabled = currentPage === 0;
+            nextBtn.disabled = currentPage === totalPages - 1;
+        }
+
+        // Navigation functions
+        prevBtn.addEventListener('click', () => {
+            if (currentPage > 0) {
+                currentPage--;
+                loadPhotos();
+            }
+        });
+
+        nextBtn.addEventListener('click', () => {
+            if (currentPage < totalPages - 1) {
+                currentPage++;
+                loadPhotos();
+            }
+        });
+
+        // Modal functions
+        function openModal(imageSrc) {
+            modalImage.src = imageSrc;
+            photoModal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            photoModal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        modalClose.addEventListener('click', closeModal);
+        photoModal.addEventListener('click', (e) => {
+            if (e.target === photoModal) {
+                closeModal();
+            }
+        });
+
+        // Close modal on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && photoModal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
         // Vimeo player instance
         let player;
-        let soundEnabled = true; // Start with sound enabled
+        let soundEnabled = true;
         let playerReady = false;
+        let hasUserInteracted = false;
 
         // Sound control elements
         const soundToggle = document.getElementById('sound-toggle');
         const soundText = document.getElementById('sound-text');
 
-        // Initialize Vimeo player when API is ready
+        // Initialize Vimeo player
         function initializePlayer() {
             const iframe = document.getElementById('background-video');
-            
-            // Create player instance
             player = new Vimeo.Player(iframe);
             
-            // Set up event listeners
             player.ready().then(() => {
                 playerReady = true;
                 console.log("Vimeo player is ready");
                 
-                // Try to unmute the video
-                player.setVolume(1).then(() => {
-                    console.log("Volume set to 1");
-                }).catch(error => {
-                    console.error("Error setting volume:", error);
-                });
-                
-                // Check if video is playing
-                player.getPlaying().then(playing => {
-                    if (!playing) {
-                        console.log("Video is not playing, trying to play");
-                        player.play().catch(error => {
-                            console.error("Error playing video:", error);
-                            // Try alternative method if play fails
-                            fixVideoPlayback();
-                        });
-                    }
-                });
+                // Enable sound after first user interaction
+                if (hasUserInteracted) {
+                    player.setVolume(1).catch(error => {
+                        console.error("Error setting volume:", error);
+                    });
+                }
             }).catch(error => {
                 console.error("Player ready error:", error);
-                // Try alternative method if player initialization fails
-                fixVideoPlayback();
             });
         }
 
-        // Fix video playback issues
-        function fixVideoPlayback() {
-            console.log("Attempting to fix video playback");
-            
-            // Check if the video ID is correct
-            const iframe = document.getElementById('background-video');
-            const currentSrc = iframe.src;
-            
-            // The video ID in the URL might be incorrect
-            // Try with a different approach - reload iframe with correct video ID
-            // Note: 1072900329 might not be a valid Vimeo ID
-            
-            // First, check if the iframe source contains a valid Vimeo ID
-            // If not, try a fallback approach
-            if (currentSrc.includes('1072900329')) {
-                console.log("Video ID might be incorrect, trying alternative approach");
-                
-                // Option 1: Try with a different video format
-                iframe.style.width = '100%';
-                iframe.style.height = '100%';
-                
-                // Option 2: Add a background color as fallback
-                document.body.style.backgroundColor = '#000000';
-                
-                // Option 3: Try to reload the iframe
-                iframe.src = iframe.src;
+        // Enable sound after user interaction (required by browsers)
+        function enableSoundAfterInteraction() {
+            if (!hasUserInteracted && playerReady) {
+                player.setVolume(1).catch(error => {
+                    console.error("Error enabling sound:", error);
+                });
+                hasUserInteracted = true;
             }
-            
-            // Ensure the video container is properly sized
-            ensureFullscreenVideo();
         }
 
         // Sound toggle functionality
         soundToggle.addEventListener('click', function() {
+            enableSoundAfterInteraction();
+            
             soundEnabled = !soundEnabled;
             soundText.textContent = soundEnabled ? 'SOUND ON' : 'SOUND OFF';
             
@@ -606,6 +756,9 @@
                 });
             }
         });
+
+        // Enable sound on any user interaction
+        document.addEventListener('click', enableSoundAfterInteraction, { once: true });
 
         // Vehicle showcase functionality
         const vehicleTriggers = document.querySelectorAll('.vehicle-item-trigger');
@@ -624,6 +777,9 @@
                 
                 // Show the showcase with animation
                 vehicleShowcase.classList.add('active');
+                
+                // Load photos
+                loadPhotos();
                 
                 // Prevent body scroll when showcase is open
                 document.body.style.overflow = 'hidden';
@@ -675,13 +831,12 @@
             }, 100);
         }
         
-        // Initialize player when the page loads
+        // Initialize everything when page loads
         window.addEventListener('DOMContentLoaded', function() {
-            // Wait for Vimeo API to load
+            // Initialize Vimeo player
             if (typeof Vimeo !== 'undefined' && Vimeo.Player) {
                 initializePlayer();
             } else {
-                // If Vimeo API isn't available yet, wait and try again
                 setTimeout(initializePlayer, 1000);
             }
             
@@ -689,10 +844,9 @@
             ensureFullscreenVideo();
         });
         
-        // Call on orientation change
+        // Handle orientation and resize
         window.addEventListener('orientationchange', ensureFullscreenVideo);
         
-        // Call on resize with debounce
         let resizeTimer;
         window.addEventListener('resize', () => {
             clearTimeout(resizeTimer);
