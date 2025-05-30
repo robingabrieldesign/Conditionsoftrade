@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vehicles - Conditions</title>
+    <style>
+        /* Base styles from index.css */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000;
+            color: white;
+            overflow-x: hidden;
+            min-height: 100vh;
+        }
+
+        .page-transition {
+            opacity: 1;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        /* Video background styles */
+        .video-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .video-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+
+        #background-video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
+            z-index: 0;
+        }
+
+        /* Content container */
+        .content-container {
+            position: relative;
+            z-index: 10;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            padding: 2rem;
+        }
+
+        /* Header styles */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 4rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo img {
+            height: 30px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            font-size: 15px; /* Changed to 15px as requested */
+            font-weight: 400;
+            transition: opacity 0.3s ease;
+        }
+
+        .nav-link:hover {
+            opacity: 0.7;
+        }
+
+        /* Vehicle list styles */
+        .vehicle-list {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            max-width: 300px;
+        }
+
+        .vehicle-item-trigger {
+            font-family: 'Times New Roman', serif;
+            font-size: 14px;
+            color: white;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem 0;
+            transition: opacity 0.3s ease;
+            text-align: left;
+        }
+
+        .vehicle-item-trigger:hover {
+            opacity: 0.7;
+        }
+
+        .vehicle-item-trigger.active {
+            opacity: 1;
+        }
+
+        /* Vehicle showcase styles */
+        .vehicle-showcase {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            transform: translateY(100%);
+            transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            z-index: 20;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+
+        .vehicle-showcase.active {
+            transform: translateY(0);
+        }
+
+        .showcase-content {
+            padding: 3rem;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .showcase-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 3rem;
+        }
+
+        .showcase-title {
+            font-family: 'Times New Roman', serif;
+            font-size: 2.5rem;
+            font-weight: normal;
+        }
+
+        .showcase-actions {
+            display: flex;
+            gap: 2rem;
+        }
+
+        .action-button {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .action-button:hover {
+            background: white;
+            color: black;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 2rem;
+            right: 2rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: opacity 0.3s ease;
+        }
+
+        .close-button:hover {
+            opacity: 0.7;
+        }
+
+        .vehicle-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .vehicle-image-container {
+            position: relative;
+            width: 100%;
+            height: 0;
+            padding-bottom: 66.67%;
+            overflow: hidden;
+            background-color: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .vehicle-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .vehicle-image-container:hover .vehicle-image {
+            transform: scale(1.05);
+        }
+
+        .vehicle-details {
+            padding: 1rem 0;
+        }
+
+        .vehicle-details h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 0.05rem;
+        }
+
+        .vehicle-details p {
+            font-size: 0.9rem;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        .vehicle-specs {
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+            padding-top: 2rem;
+        }
+
+        .specs-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+        }
+
+        .spec-item h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin: 0 0 0.5rem 0;
+            letter-spacing: 0.05rem;
+        }
+
+        .spec-item p {
+            font-size: 0.85rem;
+            margin: 0;
+            opacity: 0.8;
+        }
+
+        /* Sound control */
+        .sound-control {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            z-index: 30;
+        }
+
+        #sound-toggle {
+            background: transparent;
+            border: 1px solid white;
+            color: white;
+            padding: 0.5rem 1rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        #sound-toggle:hover {
+            background-color: white;
+            color: black;
+        }
+
+        /* Responsive styles */
+        @media (max-width: 1024px) {
+            .vehicle-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .specs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header {
+                flex-direction: row; /* Changed from column to row for better mobile layout */
+                justify-content: space-between;
+                align-items: center;
+                gap: 1rem;
+                margin-bottom: 2rem;
+            }
+
+            .nav-links {
+                gap: 1rem;
+            }
+
+            .nav-link {
+                font-size: 15px; /* Kept at 15px as requested */
+            }
+
+            .logo img {
+                height: 25px;
+            }
+
+            .showcase-content {
+                padding: 2rem 1rem;
+            }
+
+            .showcase-header {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .showcase-actions {
+                gap: 1rem;
+            }
+
+            .vehicle-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .specs-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 480px) {
+            .content-container {
+                padding: 1rem;
+            }
+
+            .header {
+                flex-direction: column; /* Stack vertically on very small screens */
+                align-items: center;
+            }
+
+            .nav-links {
+                margin-top: 1rem;
+            }
+
+            .nav-link {
+                font-size: 15px; /* Kept at 15px as requested */
+            }
+
+            .logo img {
+                height: 20px;
+            }
+
+            .vehicle-item-trigger {
+                font-size: 12px;
+            }
+
+            .showcase-title {
+                font-size: 2rem;
+            }
+
+            .specs-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body class="page-transition">
+    <!-- Vimeo video background -->
+    <div class="video-container">
+        <iframe id="background-video" src="https://player.vimeo.com/video/1072900329?background=1&autoplay=1&loop=1&byline=0&title=0&muted=1&controls=0&transparent=1&dnt=1&quality=1080p" frameborder="0" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe>
+    </div>
+
+    <!-- Main content container -->
+    <div class="content-container">
+        <!-- Header -->
+        <div class="header">
+            <!-- Logo on the left -->
+            <div class="logo">
+                <img src="BASE FILES/Conditions_Wordmark_white.png" alt="Conditions Logo">
+            </div>
+            
+            <!-- Navigation links on the right -->
+            <div class="nav-links">
+                <a href="about.html" class="nav-link">WHO WE ARE</a>
+                <a href="index.html" class="nav-link">HOME</a>
+            </div>
+        </div>
+
+        <!-- Vehicle list -->
+        <div class="vehicle-list">
+            <button class="vehicle-item-trigger" data-vehicle="200ge">200GE</button>
+        </div>
+
+        <!-- Sound control button -->
+        <div class="sound-control">
+            <button id="sound-toggle">
+                <span id="sound-text">SOUND ON</span>
+            </button>
+        </div>
+    </div>
+
+    <!-- Vehicle showcase (hidden by default) -->
+    <div class="vehicle-showcase" id="vehicle-showcase">
+        <button class="close-button" id="close-showcase">&times;</button>
+        
+        <div class="showcase-content">
+            <div class="showcase-header">
+                <h1 class="showcase-title">200GE</h1>
+                <div class="showcase-actions">
+                    <a href="#" class="action-button">INFO</a>
+                    <a href="#" class="action-button">INQUIRE</a>
+                </div>
+            </div>
+            
+            <div class="vehicle-grid">
+                <div class="vehicle-item">
+                    <div class="vehicle-image-container">
+                        <img src="photos/VEHICLES/200GE/front.jpg" alt="200GE Front View" class="vehicle-image">
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>FRONT VIEW</h3>
+                        <p>Iconic design meets modern engineering</p>
+                    </div>
+                </div>
+                
+                <div class="vehicle-item">
+                    <div class="vehicle-image-container">
+                        <img src="photos/VEHICLES/200GE/side.jpg" alt="200GE Side View" class="vehicle-image">
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>SIDE PROFILE</h3>
+                        <p>Timeless silhouette with rugged capability</p>
+                    </div>
+                </div>
+                
+                <div class="vehicle-item">
+                    <div class="vehicle-image-container">
+                        <img src="photos/VEHICLES/200GE/interior.jpg" alt="200GE Interior" class="vehicle-image">
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>INTERIOR</h3>
+                        <p>Refined comfort with premium materials</p>
+                    </div>
+                </div>
+                
+                <div class="vehicle-item">
+                    <div class="vehicle-image-container">
+                        <img src="photos/VEHICLES/200GE/detail.jpg" alt="200GE Details" class="vehicle-image">
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>DETAILS</h3>
+                        <p>Precision craftsmanship in every element</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="vehicle-specs">
+                <div class="specs-grid">
+                    <div class="spec-item">
+                        <h4>ENGINE</h4>
+                        <p>2.0L Turbocharged</p>
+                    </div>
+                    <div class="spec-item">
+                        <h4>POWER</h4>
+                        <p>208 HP / 320 NM</p>
+                    </div>
+                    <div class="spec-item">
+                        <h4>DRIVE</h4>
+                        <p>All-Wheel Drive</p>
+                    </div>
+                    <div class="spec-item">
+                        <h4>TERRAIN</h4>
+                        <p>All-Condition Capable</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://player.vimeo.com/api/player.js"></script>
+    
+    <script>
+        // Vimeo player instance
+        let player;
+        let soundEnabled = true; // Start with sound enabled
+        let playerReady = false;
+
+        // Sound control elements
+        const soundToggle = document.getElementById('sound-toggle');
+        const soundText = document.getElementById('sound-text');
+
+        // Initialize Vimeo player when API is ready
+        function initializePlayer() {
+            const iframe = document.getElementById('background-video');
+            
+            // Create player instance
+            player = new Vimeo.Player(iframe);
+            
+            // Set up event listeners
+            player.ready().then(() => {
+                playerReady = true;
+                console.log("Vimeo player is ready");
+                
+                // Try to unmute the video
+                player.setVolume(1).then(() => {
+                    console.log("Volume set to 1");
+                }).catch(error => {
+                    console.error("Error setting volume:", error);
+                });
+                
+                // Check if video is playing
+                player.getPlaying().then(playing => {
+                    if (!playing) {
+                        console.log("Video is not playing, trying to play");
+                        player.play().catch(error => {
+                            console.error("Error playing video:", error);
+                            // Try alternative method if play fails
+                            fixVideoPlayback();
+                        });
+                    }
+                });
+            }).catch(error => {
+                console.error("Player ready error:", error);
+                // Try alternative method if player initialization fails
+                fixVideoPlayback();
+            });
+        }
+
+        // Fix video playback issues
+        function fixVideoPlayback() {
+            console.log("Attempting to fix video playback");
+            
+            // Check if the video ID is correct
+            const iframe = document.getElementById('background-video');
+            const currentSrc = iframe.src;
+            
+            // The video ID in the URL might be incorrect
+            // Try with a different approach - reload iframe with correct video ID
+            // Note: 1072900329 might not be a valid Vimeo ID
+            
+            // First, check if the iframe source contains a valid Vimeo ID
+            // If not, try a fallback approach
+            if (currentSrc.includes('1072900329')) {
+                console.log("Video ID might be incorrect, trying alternative approach");
+                
+                // Option 1: Try with a different video format
+                iframe.style.width = '100%';
+                iframe.style.height = '100%';
+                
+                // Option 2: Add a background color as fallback
+                document.body.style.backgroundColor = '#000000';
+                
+                // Option 3: Try to reload the iframe
+                iframe.src = iframe.src;
+            }
+            
+            // Ensure the video container is properly sized
+            ensureFullscreenVideo();
+        }
+
+        // Sound toggle functionality
+        soundToggle.addEventListener('click', function() {
+            soundEnabled = !soundEnabled;
+            soundText.textContent = soundEnabled ? 'SOUND ON' : 'SOUND OFF';
+            
+            if (playerReady && player) {
+                player.setVolume(soundEnabled ? 1 : 0).catch(error => {
+                    console.error("Error setting volume:", error);
+                });
+            }
+        });
+
+        // Vehicle showcase functionality
+        const vehicleTriggers = document.querySelectorAll('.vehicle-item-trigger');
+        const vehicleShowcase = document.getElementById('vehicle-showcase');
+        const closeButton = document.getElementById('close-showcase');
+
+        vehicleTriggers.forEach(trigger => {
+            trigger.addEventListener('click', function() {
+                const vehicleType = this.getAttribute('data-vehicle');
+                
+                // Remove active class from all triggers
+                vehicleTriggers.forEach(t => t.classList.remove('active'));
+                
+                // Add active class to clicked trigger
+                this.classList.add('active');
+                
+                // Show the showcase with animation
+                vehicleShowcase.classList.add('active');
+                
+                // Prevent body scroll when showcase is open
+                document.body.style.overflow = 'hidden';
+            });
+        });
+
+        // Close showcase functionality
+        function closeShowcase() {
+            vehicleShowcase.classList.remove('active');
+            document.body.style.overflow = 'auto';
+            
+            // Remove active class from all triggers
+            vehicleTriggers.forEach(t => t.classList.remove('active'));
+        }
+
+        closeButton.addEventListener('click', closeShowcase);
+
+        // Close on escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape' && vehicleShowcase.classList.contains('active')) {
+                closeShowcase();
+            }
+        });
+
+        // Close when clicking outside the showcase content
+        vehicleShowcase.addEventListener('click', function(e) {
+            if (e.target === vehicleShowcase) {
+                closeShowcase();
+            }
+        });
+
+        // Function to ensure video always fills the screen
+        function ensureFullscreenVideo() {
+            const iframe = document.getElementById('background-video');
+            
+            // Make iframe temporarily even larger during transitions
+            iframe.style.width = '500vw';
+            iframe.style.height = '500vh';
+            
+            // After a short delay, return to normal large size
+            setTimeout(() => {
+                if (window.matchMedia("(orientation: portrait)").matches) {
+                    iframe.style.width = '400vh';
+                    iframe.style.height = '400vh';
+                } else {
+                    iframe.style.width = '400vw';
+                    iframe.style.height = '400vw';
+                }
+            }, 100);
+        }
+        
+        // Initialize player when the page loads
+        window.addEventListener('DOMContentLoaded', function() {
+            // Wait for Vimeo API to load
+            if (typeof Vimeo !== 'undefined' && Vimeo.Player) {
+                initializePlayer();
+            } else {
+                // If Vimeo API isn't available yet, wait and try again
+                setTimeout(initializePlayer, 1000);
+            }
+            
+            // Ensure video fills screen
+            ensureFullscreenVideo();
+        });
+        
+        // Call on orientation change
+        window.addEventListener('orientationchange', ensureFullscreenVideo);
+        
+        // Call on resize with debounce
+        let resizeTimer;
+        window.addEventListener('resize', () => {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(ensureFullscreenVideo, 100);
+        });
+    </script>
+</body>
+</html>

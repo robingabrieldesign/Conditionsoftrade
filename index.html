@@ -37,12 +37,48 @@
         <!-- Sound control button -->
         <div class="sound-control">
             <button id="sound-toggle">
-                <span id="sound-text">SOUND OFF</span>
+                <span id="sound-text">SOUND ON</span>
             </button>
         </div>
     </div>
 
     <script src="https://player.vimeo.com/api/player.js"></script>
+    <script>
+        // Initialize Vimeo player and enable sound after user interaction
+        const iframe = document.getElementById('background-video');
+        const player = new Vimeo.Player(iframe);
+        const soundToggle = document.getElementById('sound-toggle');
+        const soundText = document.getElementById('sound-text');
+        
+        let soundEnabled = true; // Start with sound conceptually "on"
+        let hasUserInteracted = false;
+
+        // Enable sound after first user interaction
+        function enableSoundAfterInteraction() {
+            if (!hasUserInteracted) {
+                player.setVolume(1);
+                hasUserInteracted = true;
+            }
+        }
+
+        // Sound toggle functionality
+        soundToggle.addEventListener('click', function() {
+            enableSoundAfterInteraction();
+            
+            if (soundEnabled) {
+                player.setVolume(0);
+                soundText.textContent = 'SOUND OFF';
+                soundEnabled = false;
+            } else {
+                player.setVolume(1);
+                soundText.textContent = 'SOUND ON';
+                soundEnabled = true;
+            }
+        });
+
+        // Enable sound on any user interaction
+        document.addEventListener('click', enableSoundAfterInteraction, { once: true });
+    </script>
     <script src="/js files/index.js"></script>
     
     <!-- Special script to handle orientation changes and resizing -->
