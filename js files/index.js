@@ -16,10 +16,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const player = new Vimeo.Player(iframe);
     const soundToggle = document.getElementById('sound-toggle');
     const soundText = document.getElementById('sound-text');
-    
+
+    player.setVolume(0);
+
     // Sound toggle functionality
     let isMuted = true; // Start muted
-    
+
     soundToggle.addEventListener('click', function() {
         if (isMuted) {
             player.setVolume(1); // Unmute
@@ -31,57 +33,25 @@ document.addEventListener('DOMContentLoaded', function() {
             isMuted = true;
         }
     });
-    
-    // Time display elements
-    const laTimeElement = document.getElementById('la-time');
-    const mnTimeElement = document.getElementById('mn-time');
-    
-    // Update time function
-    function updateTimes() {
-        const now = new Date();
-        
-        // LA time (PST/PDT)
-        const laOptions = { 
-            timeZone: 'America/Los_Angeles', 
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        };
-        const laTime = now.toLocaleTimeString('en-US', laOptions);
-        laTimeElement.textContent = laTime;
-        
-        // MN time (CST/CDT) - Minnesota
-        const mnOptions = { 
-            timeZone: 'America/Chicago', 
-            hour12: false,
-            hour: '2-digit',
-            minute: '2-digit',
-            second: '2-digit'
-        };
-        const mnTime = now.toLocaleTimeString('en-US', mnOptions);
-        mnTimeElement.textContent = mnTime;
-    }
-    
-    // Update time immediately and then every second
-    updateTimes();
-    setInterval(updateTimes, 1000);
-    
-    // Add page transition for navigation links
-    const navLinks = document.querySelectorAll('.nav-link');
+
+    // Add page transition for navigation links that trigger navigation
+    const navLinks = document.querySelectorAll('.transition-link');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
-            e.preventDefault();
             const href = this.getAttribute('href');
-            
-            // Apply transition out effect
+
+            if (!href || href.startsWith('#')) {
+                return;
+            }
+
+            e.preventDefault();
+
             document.body.classList.remove('page-loaded');
             document.body.classList.add('page-transition-out');
-            
-            // Navigate to the new page after transition completes
+
             setTimeout(function() {
                 window.location.href = href;
-            }, 500); // Match this to your transition duration
+            }, 500); // Match to transition duration
         });
     });
 });

@@ -1,10 +1,4 @@
-/* Font import - Choose ONE of these methods */
-/* Method 1: If you're using Adobe Fonts (Typekit) */
-/* Uncomment this if you're using Adobe Fonts
-@import url("https://use.typekit.net/YOUR_PROJECT_ID.css");
-*/
-
-/* Method 2: If you're self-hosting the font */
+/* Base font setup */
 @font-face {
   font-family: 'Univers LT 55 Roman';
   src: url('fonts/UniversLT-55Roman.woff2') format('woff2'),
@@ -14,7 +8,15 @@
   font-display: swap;
 }
 
-/* Reset and base styles */
+:root {
+  --desktop-overlay: rgba(0, 0, 0, 0.82);
+  --mobile-overlay: rgba(245, 240, 234, 0.95);
+  --mobile-background: #f5f0e9;
+  --desktop-text: #f6f6f6;
+  --mobile-text: #0f0f0f;
+}
+
+/* Reset */
 * {
   margin: 0;
   padding: 0;
@@ -23,145 +25,143 @@
 
 body {
   font-family: 'Univers LT 55 Roman', 'Helvetica Neue', Arial, sans-serif;
-  color: white;
-  background-color: black;
+  color: var(--desktop-text);
+  background-color: #050505;
   height: 100vh;
   width: 100vw;
   overflow: hidden;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.04em;
 }
 
 /* Video background */
 .video-container {
   position: fixed;
-  top: 0;
-  left: 0;
+  inset: 0;
   width: 100%;
   height: 100%;
-  z-index: -1;
+  z-index: -2;
   overflow: hidden;
 }
 
-/* For Vimeo iframe - more robust approach */
 iframe#background-video {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 300vw; /* Extremely wide */
-  height: 300vh; /* Extremely tall */
-  opacity: 0.8; /* 80% opacity as requested */
+  width: 400vw;
+  height: 400vh;
+  opacity: 0.1;
   border: 0;
-  pointer-events: none; /* Prevents iframe from capturing clicks */
-  transition: width 0.1s, height 0.1s; /* Quick transition during resize */
+  pointer-events: none;
+  transition: width 0.15s ease, height 0.15s ease;
 }
 
-/* Handle orientation changes and transitions */
-@media screen and (orientation: portrait) {
-  iframe#background-video {
-    width: 400vh; /* Even wider in portrait mode */
-    height: 400vh; /* Even taller in portrait mode */
-  }
+.background-overlay {
+  position: fixed;
+  inset: 0;
+  background: var(--desktop-overlay);
+  z-index: -1;
+  pointer-events: none;
+  transition: background 0.3s ease;
 }
 
-@media screen and (orientation: landscape) {
-  iframe#background-video {
-    width: 400vw; /* Even wider in landscape mode */
-    height: 400vw; /* Even taller in landscape mode */
-  }
-}
-
-/* Content layout - centered like in the screenshot */
-.content-container {
-  position: absolute;
-  top: 0;
-  left: 0;
+.content-wrapper {
+  position: relative;
+  min-height: 100vh;
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: center; /* Center vertically */
-  align-items: center; /* Center horizontally */
-  padding: 2rem;
-}
-
-/* Main row with times, logo, and navigation */
-.main-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 100%;
-  max-width: 1200px; /* Limit width on larger screens */
-}
-
-/* City times */
-.city-times {
-  flex: 1;
-  text-align: left;
-}
-
-.time-display {
-  margin-bottom: 0.5rem;
-  font-size: 1rem;
-}
-
-/* Center logo */
-.center-logo {
-  flex: 2;
-  display: flex;
   justify-content: center;
-  max-width: 300px;
+  align-items: center;
+  padding: 3rem clamp(2rem, 6vw, 6rem);
+  gap: 2.5rem;
+  text-transform: uppercase;
 }
 
-.center-logo img {
+.desktop-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3rem;
   width: 100%;
-  height: auto;
 }
 
-/* Navigation links */
-.nav-links {
-  flex: 1;
-  text-align: right;
+.desktop-logo {
+  font-size: clamp(3.5rem, 18vw, 12rem);
+  font-weight: 700;
+  font-style: italic;
+  letter-spacing: 0.18em;
 }
 
-.nav-links div {
-  margin-bottom: 0.5rem;
+.desktop-columns {
+  width: min(1200px, 100%);
+  display: grid;
+  grid-template-columns: repeat(6, minmax(120px, 1fr));
+  gap: 2rem clamp(1.5rem, 3vw, 3rem);
 }
 
-/* Navigation link styling */
-.nav-link {
-  color: white;
-  text-decoration: none;
-  cursor: pointer;
-  display: inline-block;
-  transition: transform 0.3s ease, letter-spacing 0.3s ease;
-  transform-origin: right;
+.desktop-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
 }
 
-.nav-link:hover {
-  transform: scale(1.1);
+.desktop-column-title {
+  font-size: 0.85rem;
+  letter-spacing: 0.24em;
+}
+
+.desktop-column ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+  font-size: 0.95rem;
   letter-spacing: 0.08em;
 }
 
-/* Sound control */
+.desktop-column a,
+.desktop-column span {
+  color: inherit;
+  text-decoration: none;
+  transition: opacity 0.25s ease;
+}
+
+.desktop-column a:hover,
+.desktop-column span:hover {
+  opacity: 0.7;
+}
+
+.mobile-layout {
+  display: none;
+  width: 100%;
+}
+
 .sound-control {
-  position: absolute;
+  position: fixed;
   bottom: 2rem;
   right: 2rem;
 }
 
 #sound-toggle {
-  background: transparent;
-  border: none;
-  color: white;
-  font-family: 'Univers LT 55 Roman', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 1rem;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid currentColor;
+  color: inherit;
+  font-family: inherit;
+  font-size: 0.85rem;
+  letter-spacing: 0.18em;
+  padding: 0.75rem 1.75rem;
   cursor: pointer;
-  padding: 0.5rem;
-  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  transition: background 0.2s ease, opacity 0.2s ease;
 }
 
-/* Page transition effects */
+#sound-toggle:hover {
+  background: rgba(255, 255, 255, 0.1);
+  opacity: 0.85;
+}
+
+/* Page transition */
 .page-transition {
   opacity: 0;
   transition: none;
@@ -169,7 +169,7 @@ iframe#background-video {
 
 .page-loaded {
   opacity: 1;
-  transition: opacity 1s ease-out;
+  transition: opacity 0.8s ease-out;
 }
 
 .page-transition-out {
@@ -177,59 +177,119 @@ iframe#background-video {
   transition: opacity 0.5s ease-in-out;
 }
 
-/* Responsive adjustments - keeping horizontal layout but making fonts smaller */
-@media (max-width: 768px) {
-  .main-row {
-      /* Keep horizontal layout */
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-      padding: 0 0.5rem;
-  }
-  
-  /* Make fonts smaller on mobile */
-  .time-display {
-      font-size: 0.7rem;
-      margin-bottom: 0.3rem;
-  }
-  
-  .nav-links div {
-      font-size: 0.7rem;
-      margin-bottom: 0.3rem;
-  }
-  
-  /* Make logo smaller */
-  .center-logo {
-      max-width: 150px;
-  }
-  
-  /* Adjust sound toggle */
-  #sound-toggle {
-      font-size: 0.7rem;
-  }
-  
-  /* Reduce padding */
-  .content-container {
-      padding: 1rem;
+/* Responsive styles */
+@media (max-width: 1280px) {
+  .desktop-columns {
+    grid-template-columns: repeat(3, minmax(160px, 1fr));
+    row-gap: 2.5rem;
   }
 }
 
-/* Extra small devices */
-@media (max-width: 480px) {
-  .time-display {
-      font-size: 0.6rem;
+@media (max-width: 900px) {
+  .desktop-columns {
+    grid-template-columns: repeat(2, minmax(180px, 1fr));
   }
-  
-  .nav-links div {
-      font-size: 0.6rem;
+}
+
+@media (max-width: 768px) {
+  body {
+    color: var(--mobile-text);
+    background-color: var(--mobile-background);
+    overflow-y: auto;
   }
-  
-  .center-logo {
-      max-width: 120px;
+
+  .background-overlay {
+    background: var(--mobile-overlay);
   }
-  
+
+  .content-wrapper {
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 2.5rem 1.75rem 4.5rem;
+    gap: 2rem;
+    text-transform: none;
+  }
+
+  .desktop-layout {
+    display: none;
+  }
+
+  .mobile-layout {
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+    max-width: 420px;
+    width: 100%;
+    margin: 0 auto;
+  }
+
+  .mobile-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+  }
+
+  .mobile-models {
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+    font-size: 2rem;
+    line-height: 1.1;
+    text-transform: none;
+  }
+
+  .mobile-models p {
+    margin: 0;
+  }
+
+  .mobile-footer {
+    text-align: center;
+    font-size: 0.75rem;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+  }
+
+  .sound-control {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
+  }
+
   #sound-toggle {
-      font-size: 0.6rem;
+    background: rgba(255, 255, 255, 0.35);
+    color: var(--mobile-text);
+  }
+}
+
+@media (max-width: 480px) {
+  .mobile-models {
+    font-size: 1.65rem;
+  }
+
+  .mobile-header {
+    font-size: 0.75rem;
+    letter-spacing: 0.24em;
+  }
+
+  .mobile-footer {
+    font-size: 0.65rem;
+    letter-spacing: 0.26em;
+  }
+}
+
+@media screen and (orientation: portrait) {
+  iframe#background-video {
+    width: 400vh;
+    height: 400vh;
+  }
+}
+
+@media screen and (orientation: landscape) {
+  iframe#background-video {
+    width: 400vw;
+    height: 400vw;
   }
 }
